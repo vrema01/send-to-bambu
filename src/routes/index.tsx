@@ -51,23 +51,26 @@ function Home() {
               Fusion add-in · Windows & Mac
             </p>
             <h1 className="mt-3 max-w-xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">
-              One button. Every visible body. Bambu Studio.
+              Send visible parts to Bambu Studio
             </h1>
             <p className="mt-4 max-w-lg text-base leading-relaxed text-muted">
-              Drop a Print button into Fusion. It takes every visible solid —
-              no selecting — writes a millimeter 3MF, and opens Bambu Studio.
-              One zip installs on a Windows PC and a Mac.
+              A button in Fusion that grabs every solid you can see, saves it
+              in millimeters, and opens it in Bambu Studio. You do not select
+              anything. Hide a body to leave it out.
             </p>
             <p className="mt-3 max-w-lg text-sm leading-relaxed text-sage">
-              1.3.1: every visible solid, and the mesh is written in
-              millimeters — Fusion is told to export mm instead of scaling
-              centimeters. Stop the old add-in, replace the folder, quit
-              Fusion, then Run.
+              Already using an older copy? Stop it, replace the folder, quit
+              Fusion, then Run again.
             </p>
             <div className="mt-7 flex flex-wrap items-center gap-3">
               <DownloadButton />
               <Button variant="outline" size="lg" asChild>
                 <a href="#install">Install steps</a>
+              </Button>
+              <Button variant="outline" size="lg" asChild>
+                <a href="/instructions.html" download="SendToBambu-instructions.html">
+                  Instructions page
+                </a>
               </Button>
             </div>
           </div>
@@ -107,12 +110,12 @@ function Home() {
         <section id="install" className="mx-auto max-w-5xl px-4 py-14">
           <p className="font-mono text-xs tracking-wide text-sage">Install</p>
           <h2 className="mt-2 text-2xl font-semibold tracking-tight">
-            Same add-in on both machines
+            Four steps. Same on Windows and Mac.
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-relaxed text-muted">
-            Fusion loads this as a Python add-in. The button is identical on
-            Windows and Mac; only the Bambu Studio path changes, and that is
-            auto-detected.
+            Unzip the folder, tell Fusion where it is, and click Run. The
+            only difference between computers is where Bambu Studio is
+            installed, and the add-in looks for that itself.
           </p>
           <div className="mt-8">
             <InstallGuide />
@@ -180,24 +183,24 @@ function Home() {
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             {[
               {
-                q: "No visible solid body found",
-                a: "Turn on the bodies you want in the browser (light bulb on). Hidden and surface bodies are skipped. You do not need to select anything.",
+                q: "It says no body was found",
+                a: "Turn the light bulb on for the bodies you want. Hidden bodies and surfaces are skipped. You do not need to click the bodies first.",
               },
               {
-                q: "Bambu Studio was not found",
-                a: "Install Studio, then either relaunch Fusion or paste the .exe / .app path in Bambu Print Settings.",
+                q: "Bambu Studio did not open",
+                a: "Install Bambu Studio, then click Bambu Print Settings → Locate Bambu Studio and pick the app.",
               },
               {
-                q: "Part is the wrong size in Bambu",
-                a: "That was the old ×10 centimeter scale on a file Fusion already wrote in mm. Download 1.3.1, Stop Send to Bambu, replace the whole folder, quit Fusion, then Run.",
+                q: "The part is the wrong size",
+                a: "You still have an older copy. Stop the add-in, replace the whole SendToBambu folder, quit Fusion, then Run.",
               },
               {
-                q: "Button is missing",
-                a: "Scripts and Add-Ins → Add-Ins → Send to Bambu → Run. Enable Run on Startup so it survives a Fusion restart.",
+                q: "I do not see the button",
+                a: "Utilities → Add-Ins → Scripts and Add-Ins → Add-Ins tab → Send to Bambu → Run. Check Run on Startup so it comes back next time.",
               },
               {
-                q: "scale_binary_stl error",
-                a: "Fusion kept the previous helper in memory. Download this zip, Stop Send to Bambu, unzip over the whole folder (SendToBambu.py and stb_export.py together), quit Fusion, open it, then Run.",
+                q: "An error mentions scale_binary_stl",
+                a: "Fusion is still holding the old files. Stop the add-in, replace the whole folder, quit Fusion, then Run.",
               },
             ].map((item) => (
               <div
@@ -213,6 +216,11 @@ function Home() {
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-3">
             <DownloadButton />
+            <Button variant="outline" asChild>
+              <a href="/instructions.html" download="SendToBambu-instructions.html">
+                Instructions page
+              </a>
+            </Button>
             <p className="text-sm text-muted">
               Zip includes the add-in and a short README.
             </p>

@@ -3,41 +3,34 @@
 import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
+const shared = [
+  {
+    title: "Download and unzip",
+    body: "Download SendToBambu.zip and unzip it. You should get one folder named SendToBambu. Leave the files inside that folder. Do not rename it.",
+  },
+  {
+    title: "Point Fusion at the folder",
+    body: "In Fusion: Utilities → Add-Ins → Scripts and Add-Ins. Open the Add-Ins tab. Next to My Add-Ins, click the green +. Choose the SendToBambu folder.",
+  },
+  {
+    title: "Turn it on",
+    body: "Select Send to Bambu. Check Run on Startup, then click Run. The button shows up in Design, on a panel named Bambu Print.",
+  },
+];
+
 const windowsSteps = [
+  ...shared,
   {
-    title: "Unzip the add-in",
-    body: "Download SendToBambu.zip and unzip it. You should have a folder named SendToBambu that contains SendToBambu.py and SendToBambu.manifest. Use this same folder on a Mac if you have one.",
-  },
-  {
-    title: "Add it in Fusion",
-    body: "In Fusion: Utilities → Add-Ins → Scripts and Add-Ins. Open the Add-Ins tab, click the green plus next to My Add-Ins, and choose the SendToBambu folder.",
-  },
-  {
-    title: "Stop, replace, then Run",
-    body: "If Send to Bambu is already loaded, click Stop. Unzip this download over the same SendToBambu folder so SendToBambu.py and stb_export.py update together. Quit Fusion, open it, select the add-in, check Run on Startup, then Run.",
-  },
-  {
-    title: "Bambu Studio path",
-    body: "Auto-detect looks in Program Files, Local AppData, and the Windows App Paths registry. If yours lives elsewhere, click Locate Bambu Studio in Bambu Print Settings and pick bambu-studio.exe.",
+    title: "Updating an older copy",
+    body: "In Scripts and Add-Ins, select Send to Bambu and click Stop. Quit Fusion completely. Unzip the new download on top of the old SendToBambu folder and replace it. Open Fusion and click Run.",
   },
 ];
 
 const macSteps = [
+  ...shared,
   {
-    title: "Unzip the add-in",
-    body: "Download SendToBambu.zip and unzip it. Keep the SendToBambu folder intact — Fusion needs SendToBambu.py sitting next to SendToBambu.manifest. The same zip is what you install on Windows.",
-  },
-  {
-    title: "Add it in Fusion",
-    body: "In Fusion: Utilities → Add-Ins → Scripts and Add-Ins. Open the Add-Ins tab, click the green plus next to My Add-Ins, and choose the SendToBambu folder.",
-  },
-  {
-    title: "Stop, replace, then Run",
-    body: "If Send to Bambu is already loaded, click Stop. Unzip this download over the same SendToBambu folder so SendToBambu.py and stb_export.py update together. Quit Fusion, open it, select the add-in, check Run on Startup, then Run.",
-  },
-  {
-    title: "Bambu Studio path",
-    body: "Auto-detect looks in /Applications and ~/Applications, then Spotlight. Launch uses macOS open -a so an already-running Studio gets the file. If needed, Locate Bambu Studio and pick BambuStudio.app (it behaves like a folder).",
+    title: "Updating an older copy",
+    body: "In Scripts and Add-Ins, select Send to Bambu and click Stop. Quit Fusion (Fusion menu → Quit, not just close the window). Unzip the new download on top of the old SendToBambu folder and replace it. Open Fusion and click Run.",
   },
 ];
 
