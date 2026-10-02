@@ -202,6 +202,10 @@ function Home() {
                 q: "An error mentions scale_binary_stl",
                 a: "Fusion is still holding the old files. Stop the add-in, replace the whole folder, quit Fusion, then Run.",
               },
+              {
+                q: "Bambu says thousands of open edges",
+                a: "That was every triangle corner being saved on its own. Update to 1.3.3. A real gap in the body is a small number, not one warning per edge.",
+              },
             ].map((item) => (
               <div
                 key={item.q}

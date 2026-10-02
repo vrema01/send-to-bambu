@@ -6,7 +6,7 @@
     "description": {
         "": "One-click send every visible Fusion solid to Bambu Studio for slicing and printing. Same add-in on Windows and Mac."
     },
-    "version": "1.3.2",
+    "version": "1.3.3",
     "runOnStartup": true,
     "supportedOS": "windows|mac",
     "editEnabled": true

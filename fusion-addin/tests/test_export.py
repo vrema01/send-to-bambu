@@ -15,6 +15,15 @@ import stb_settings  # noqa: E402
 import stb_slicer  # noqa: E402
 
 
+def _open_edges(triangles):
+    counts = {}
+    for i, j, k in triangles:
+        for edge in ((i, j), (j, k), (k, i)):
+            key = tuple(sorted(edge))
+            counts[key] = counts.get(key, 0) + 1
+    return sum(1 for count in counts.values() if count == 1)
+
+
 class ExportTests(unittest.TestCase):
     def test_sanitize(self):
         self.assertEqual(stb_export.sanitize_filename("Widget v2"), "Widget v2")
@@ -88,6 +97,29 @@ class ExportTests(unittest.TestCase):
             self.assertEqual(settings.count("<object "), 2)
             self.assertEqual(settings.count("<part "), 2)
             self.assertEqual(settings.count("<model_instance>"), 2)
+
+    def test_weld_closes_edges_on_a_solid(self):
+        # Four triangles of a tetrahedron, each corner repeated like a binary STL.
+        raw = [
+            (0.0, 0.0, 0.0),
+            (10.0, 0.0, 0.0),
+            (0.0, 10.0, 0.0),
+            (10.0, 0.0, 0.0),
+            (0.0, 10.0, 0.0),
+            (0.0, 0.0, 10.0),
+            (0.0, 0.0, 0.0),
+            (0.0, 10.0, 0.0),
+            (0.0, 0.0, 10.0),
+            (0.0, 0.0, 0.0),
+            (0.0, 0.0, 10.0),
+            (10.0, 0.0, 0.0),
+        ]
+        tris = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (9, 10, 11)]
+        welded, welded_tris = stb_export.weld_vertices(raw, tris)
+        self.assertEqual(len(welded), 4)
+        self.assertEqual(len(welded_tris), 4)
+        self.assertEqual(_open_edges(welded_tris), 0)
+        self.assertEqual(_open_edges(tris), 12)
 
 
 class SlicerResolveTests(unittest.TestCase):

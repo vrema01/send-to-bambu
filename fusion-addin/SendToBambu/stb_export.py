@@ -152,8 +152,29 @@ def _attr(value):
     )
 
 
-def _fmt(value):
-    return "{:.6f}".format(value)
+def weld_vertices(vertices, triangles):
+    """Share one index for corners that fall on the same point.
+
+    Binary STL repeats each corner on every triangle. A slicer that trusts
+    those indices reports every edge as open, even when the solid is closed.
+    """
+    lookup = {}
+    welded = []
+    remap = []
+    for x, y, z in vertices:
+        key = (_fmt(x), _fmt(y), _fmt(z))
+        slot = lookup.get(key)
+        if slot is None:
+            slot = len(welded)
+            lookup[key] = slot
+            welded.append((float(key[0]), float(key[1]), float(key[2])))
+        remap.append(slot)
+    welded_tris = []
+    for i, j, k in triangles:
+        a, b, c = remap[i], remap[j], remap[k]
+        if a != b and b != c and c != a:
+            welded_tris.append((a, b, c))
+    return welded, welded_tris
 
 
 def _model_settings_xml(models):
@@ -211,6 +232,10 @@ def _model_settings_xml(models):
     )
 
 
+def _fmt(value):
+    return "{:.6f}".format(value)
+
+
 def write_3mf(path, objects):
     """
     Write a unit=millimeter 3MF.
@@ -221,8 +246,7 @@ def write_3mf(path, objects):
     models = []
     for index, obj in enumerate(objects, start=1):
         name = _attr(obj.get("name") or "Body {}".format(index))
-        verts = obj["vertices"]
-        tris = obj["triangles"]
+        verts, tris = weld_vertices(obj["vertices"], obj["triangles"])
         v_chunks = []
         for v in verts:
             v_chunks.append(
