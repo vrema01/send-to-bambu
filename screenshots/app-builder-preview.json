@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "Send to Bambu",
+      "hasCanvas": false,
+      "bodyTextLen": 3420,
+      "bodyTextHash": "e2c654af73c857ffd4a22112e24ff9ff432f751c82cefc08047f60ce81fe33b4",
+      "bodyTextPrefix": "Send to Bambu Download add-in Fusion add-in · Windows & Mac One ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "Send to Bambu",
+      "hasCanvas": false,
+      "bodyTextLen": 3420,
+      "bodyTextHash": "e2c654af73c857ffd4a22112e24ff9ff432f751c82cefc08047f60ce81fe33b4",
+      "bodyTextPrefix": "Send to Bambu Download add-in Fusion add-in · Windows & Mac One ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
