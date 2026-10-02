@@ -37,7 +37,10 @@ QUALITY_LABELS = (
     ("Very high", "veryHigh"),
 )
 LABEL_TO_QUALITY = {label: value for label, value in QUALITY_LABELS}
-FORMAT_LABELS = (("3MF (recommended)", "3mf"), ("STL", "stl"))
+FORMAT_LABELS = (
+    ("3MF — each body is its own object", "3mf"),
+    ("STL — one combined mesh", "stl"),
+)
 LABEL_TO_FORMAT = {label: value for label, value in FORMAT_LABELS}
 REFINEMENT_NAMES = {
     "low": "MeshRefinementLow",
@@ -512,7 +515,7 @@ class SettingsExecuteHandler(adsk.core.CommandEventHandler):
                 quality.selectedItem.name if quality and quality.selectedItem else "Medium"
             )
             format_label = (
-                fmt.selectedItem.name if fmt and fmt.selectedItem else "3MF (recommended)"
+                fmt.selectedItem.name if fmt and fmt.selectedItem else "3MF — each body is its own object"
             )
             stb_settings.save(
                 {

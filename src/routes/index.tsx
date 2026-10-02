@@ -87,8 +87,8 @@ function Home() {
               },
               {
                 icon: Layers3,
-                title: "Exports in mm",
-                body: "Writes 3MF in millimeters so the part does not come in 10× small. STL is optional in settings.",
+                title: "Separate objects, in mm",
+                body: "Each visible solid opens as its own object in Bambu Studio, in millimeters. STL in settings is the one format that combines them.",
               },
               {
                 icon: Printer,

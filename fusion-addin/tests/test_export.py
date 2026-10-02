@@ -79,9 +79,15 @@ class ExportTests(unittest.TestCase):
             stb_export.stls_to_3mf([(a, "Bracket"), (b, "Bracket")], many)
             with zipfile.ZipFile(many) as zf:
                 model = zf.read("3D/3dmodel.model").decode("utf-8")
+                settings = zf.read("Metadata/model_settings.config").decode("utf-8")
             self.assertIn("Bracket", model)
             self.assertIn("Bracket 2", model)
             self.assertEqual(model.count("<object "), 2)
+            self.assertEqual(model.count("<item "), 2)
+            # One Bambu object per body. Not several parts stuffed into one object.
+            self.assertEqual(settings.count("<object "), 2)
+            self.assertEqual(settings.count("<part "), 2)
+            self.assertEqual(settings.count("<model_instance>"), 2)
 
 
 class SlicerResolveTests(unittest.TestCase):

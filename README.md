@@ -21,7 +21,9 @@ The button is in Design, on the **Bambu Print** panel.
 
 1. Hide any body you do not want (light bulb off). You do not select anything.
 2. Click **Send to Bambu**.
-3. Bambu Studio opens. Slice and print there.
+3. Each visible solid opens as its own object in Bambu Studio. Slice and print there.
+
+Leave the format on 3MF. STL combines every body into one mesh.
 
 ## Updating an older copy
 

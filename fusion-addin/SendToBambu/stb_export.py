@@ -5,7 +5,6 @@ from __future__ import annotations
 import os
 import struct
 import zipfile
-from xml.sax.saxutils import escape
 
 
 def sanitize_filename(name):
@@ -142,8 +141,74 @@ def read_binary_stl(path):
     return vertices, triangles
 
 
+def _attr(value):
+    text = "" if value is None else str(value)
+    amp = "&" + "amp;"
+    return (
+        text.replace("&", amp)
+        .replace("<", "&" + "lt;")
+        .replace(">", "&" + "gt;")
+        .replace('"', "&" + "quot;")
+    )
+
+
 def _fmt(value):
     return "{:.6f}".format(value)
+
+
+def _model_settings_xml(models):
+    """Tell Bambu Studio each mesh is its own object, not a part of one object."""
+    objects = []
+    instances = []
+    assemble = []
+    for model in models:
+        oid = model["id"]
+        name = model["name"]
+        faces = model["faces"]
+        objects.append(
+            '  <object id="{id}">\n'
+            '    <metadata key="name" value="{name}"/>\n'
+            '    <metadata key="extruder" value="1"/>\n'
+            '    <metadata face_count="{faces}"/>\n'
+            '    <part id="{id}" subtype="normal_part">\n'
+            '      <metadata key="name" value="{name}"/>\n'
+            '      <metadata key="matrix" value="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"/>\n'
+            '      <mesh_stat edges_fixed="0" degenerate_facets="0" facets_removed="0" '
+            'facets_reversed="0" backwards_edges="0"/>\n'
+            "    </part>\n"
+            "  </object>".format(id=oid, name=name, faces=faces)
+        )
+        instances.append(
+            "    <model_instance>\n"
+            '      <metadata key="object_id" value="{id}"/>\n'
+            '      <metadata key="instance_id" value="0"/>\n'
+            '      <metadata key="identify_id" value="{ident}"/>\n'
+            "    </model_instance>".format(id=oid, ident=1000 + oid)
+        )
+        assemble.append(
+            '    <assemble_item object_id="{id}" instance_id="0" '
+            'transform="1 0 0 0 1 0 0 0 1 0 0 0" offset="0 0 0"/>'.format(id=oid)
+        )
+    return (
+        '<?xml version="1.0" encoding="UTF-8"?>\n'
+        "<config>\n"
+        "{objects}\n"
+        "  <plate>\n"
+        '    <metadata key="plater_id" value="1"/>\n'
+        '    <metadata key="plater_name" value=""/>\n'
+        '    <metadata key="locked" value="false"/>\n'
+        '    <metadata key="filament_map_mode" value="Auto For Flush"/>\n'
+        "{instances}\n"
+        "  </plate>\n"
+        "  <assemble>\n"
+        "{assemble}\n"
+        "  </assemble>\n"
+        "</config>\n"
+    ).format(
+        objects="\n".join(objects),
+        instances="\n".join(instances),
+        assemble="\n".join(assemble),
+    )
 
 
 def write_3mf(path, objects):
@@ -155,7 +220,7 @@ def write_3mf(path, objects):
     """
     models = []
     for index, obj in enumerate(objects, start=1):
-        name = escape(obj.get("name") or "Body {}".format(index))
+        name = _attr(obj.get("name") or "Body {}".format(index))
         verts = obj["vertices"]
         tris = obj["triangles"]
         v_chunks = []
@@ -174,6 +239,7 @@ def write_3mf(path, objects):
             {
                 "id": index,
                 "name": name,
+                "faces": len(tris),
                 "vertex_xml": "".join(v_chunks),
                 "triangle_xml": "".join(t_chunks),
             }
@@ -190,7 +256,10 @@ def write_3mf(path, objects):
             "      </mesh>\n"
             "    </object>".format(**model)
         )
-        build_xml.append('    <item objectid="{}"/>'.format(model["id"]))
+        build_xml.append(
+            '    <item objectid="{id}" printable="1" '
+            'transform="1 0 0 0 1 0 0 0 1 0 0 0"/>'.format(id=model["id"])
+        )
 
     model_xml = (
         '<?xml version="1.0" encoding="UTF-8"?>\n'
@@ -217,6 +286,7 @@ def write_3mf(path, objects):
         '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">\n'
         '  <Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>\n'
         '  <Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/>\n'
+        '  <Default Extension="config" ContentType="text/xml"/>\n'
         "</Types>\n"
     )
 
@@ -228,6 +298,7 @@ def write_3mf(path, objects):
         zf.writestr("[Content_Types].xml", content_types)
         zf.writestr("_rels/.rels", rels)
         zf.writestr("3D/3dmodel.model", model_xml)
+        zf.writestr("Metadata/model_settings.config", _model_settings_xml(models))
 
 
 def stl_to_3mf(stl_path, threemf_path, name="Body"):

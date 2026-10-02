@@ -17,7 +17,9 @@ The button is in the Design workspace, on a panel named **Bambu Print**.
 
 1. Open the design. Hide anything you do not want printed.
 2. Click **Send to Bambu**.
-3. Bambu Studio opens. Slice and print there.
+3. Bambu Studio opens with each solid as its own object. Slice and print there.
+
+STL in settings is the exception: it merges everything into one mesh. Leave the format on 3MF.
 
 ## You already installed an older copy
 
