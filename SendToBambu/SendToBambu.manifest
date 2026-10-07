@@ -7,7 +7,7 @@
     "": "Send selected Fusion bodies to Bambu Studio as closed STL files."
   },
   "version": "1.1.0",
-  "runOnStartup": false,
+  "runOnStartup": true,
   "supportedOS": "windows|mac",
   "editEnabled": true
 }

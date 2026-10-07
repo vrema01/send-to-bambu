@@ -12,11 +12,11 @@ Copy this whole folder into Fusion's AddIns folder.
 
 Windows:
 
-`%AppData%\Autodesk\Autodesk Fusion\API\AddIns\SendToBambu`
-
-If that folder is not on the machine, use the older path:
-
 `%AppData%\Autodesk\Autodesk Fusion 360\API\AddIns\SendToBambu`
+
+If that folder is not on the machine, use:
+
+`%AppData%\Autodesk\Autodesk Fusion\API\AddIns\SendToBambu`
 
 Mac:
 
@@ -26,7 +26,7 @@ Older Mac installs:
 
 `~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/SendToBambu`
 
-In Fusion: Utilities, Scripts and Add-Ins (Shift+S), Add-Ins tab. If it is not listed, click the green + next to My Add-Ins and choose the `SendToBambu` folder. Select Send to Bambu, then Run. Check Run on Startup if you want the button every time.
+The manifest starts the add-in when Fusion opens. The button shows under Utilities, named Send to Bambu. If it is not listed, press Shift+S, open the Add-Ins tab, and confirm SendToBambu is under My Add-Ins.
 
 Button shows under Utilities, named Send to Bambu.
 
