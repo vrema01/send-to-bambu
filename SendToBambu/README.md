@@ -1,8 +1,8 @@
 # Send to Bambu
 
-Sends selected bodies to Bambu Studio as STL.
+Sends every visible body to Bambu Studio as a closed STL. Hidden bodies are skipped. There is no selection and no message box.
 
-Version 1.1 closes open sections before export. Open surface bodies are copied into a temporary component, stitched (0.5 mm gap tolerance), and exported only if they become a solid. Your original design is not changed.
+Version 1.2 closes open sections before export. The body is copied into a temporary component. Your original design is not changed. Nearby open edges are stitched (0.5 mm, then 1 mm, 2 mm, and 4 mm). Each hole that is still open is patched and stitched back on. The STL is written only when the result is a watertight solid.
 
 ## Install
 
@@ -26,15 +26,13 @@ Older Mac installs:
 
 `~/Library/Application Support/Autodesk/Autodesk Fusion 360/API/AddIns/SendToBambu`
 
-The manifest starts the add-in when Fusion opens. The button shows under Utilities, named Send to Bambu. If it is not listed, press Shift+S, open the Add-Ins tab, and confirm SendToBambu is under My Add-Ins.
-
-Button shows under Utilities, named Send to Bambu.
+The manifest starts the add-in when Fusion opens. On the Solid tab, Bambu is the last icon. Click the green icon once. If it is not listed, press Shift+S, open the Add-Ins tab, select SendToBambu, and click Run.
 
 ## Use
 
-1. Select one or more bodies.
-2. Click Send to Bambu.
-3. Bambu Studio opens with the STL files.
+1. Leave the light on for every body that should print. Hide the rest.
+2. Click the green Bambu icon.
+3. Bambu Studio comes forward with those bodies. There is no selection step and no status box.
 
 Close Bambu Studio first if it is already open. It often ignores a file sent while it is running.
 
@@ -45,3 +43,7 @@ Windows: `C:\Program Files\Bambu Studio\bambu-studio.exe`
 Mac: `/Applications/BambuStudio.app`
 
 If Studio is installed somewhere else, edit `BAMBU_WIN` or `BAMBU_MAC` at the top of `SendToBambu.py`.
+
+## Source
+
+The master copy is https://github.com/vrema01/send-to-bambu on the `main` branch.
